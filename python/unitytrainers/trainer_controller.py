@@ -84,12 +84,12 @@ class TrainerController(object):
         self.env = UnityEnvironment(file_name=env_path, worker_id=self.worker_id,
                                     curriculum=self.curriculum_file, seed=self.seed,
                                     docker_training=self.docker_training)
-        print("1111: " + env_path)
+
         if env_path is None:
             self.env_name = 'editor_' + self.env.academy_name
         else:
             self.env_name = os.path.basename(os.path.normpath(env_path))  # Extract out name of environment
-        print("2222: " + env_path)
+
     def _get_progress(self):
         if self.curriculum_file is not None:
             progress = 0
@@ -248,12 +248,12 @@ class TrainerController(object):
             global_step = 0  # This is only for saving the model
             self.env.curriculum.increment_lesson(self._get_progress())
             curr_info = self.env.reset(train_mode=self.fast_simulation)
-            #mycode
-            subsize = 40# {2,4,8,16,20,40} higher the image will have lower resolution
-            for brain_name, trainer in self.trainers.items():
-                curr_info[brain_name].visual_observations[1] = self.subsampling(
-                    curr_info[brain_name].visual_observations[1], subsize)
-            # end mycode
+            # #mycode
+            # subsize = 40# {2,4,8,16,20,40} higher the image will have lower resolution
+            # for brain_name, trainer in self.trainers.items():
+            #     curr_info[brain_name].visual_observations[1] = self.subsampling(
+            #         curr_info[brain_name].visual_observations[1], subsize)
+            # # end mycode
             if self.train_model:
                 for brain_name, trainer in self.trainers.items():
                     trainer.write_tensorboard_text('Hyperparameters', trainer.parameters)
@@ -279,10 +279,10 @@ class TrainerController(object):
                     if t.get_step%500==0 :
                         print("###steps:", t.get_step)
                     for brain_name, trainer in self.trainers.items():
-                        #mycode
-                        new_info[brain_name].visual_observations[1] = self.subsampling(
-                            new_info[brain_name].visual_observations[1], subsize)
-                        #end mycode
+                        # #mycode
+                        # new_info[brain_name].visual_observations[1] = self.subsampling(
+                        #     new_info[brain_name].visual_observations[1], subsize)
+                        # #end mycode
                         trainer.add_experiences(curr_info, new_info, take_action_outputs[brain_name])
                         trainer.process_experiences(curr_info, new_info)
                         if trainer.is_ready_update() and self.train_model and trainer.get_step <= trainer.get_max_steps:

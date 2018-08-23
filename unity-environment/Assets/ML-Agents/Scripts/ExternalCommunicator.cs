@@ -104,7 +104,7 @@ public class ExternalCommunicator : Communicator
         {
 			#if UNITY_EDITOR
 
-			comPort = 5109;
+			comPort = 5107;
 
 			#else
 

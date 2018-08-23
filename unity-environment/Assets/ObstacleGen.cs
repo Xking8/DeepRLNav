@@ -23,7 +23,7 @@ public class ObstacleGen : MonoBehaviour {
 		Obs = new GameObject[ObsNumMax];
 		for (int i = 0; i < ObsNumMax; i++) {
 			
-			Obs [i] = Instantiate (mycube, new Vector3 (-50, -50, -50), Quaternion.Euler (0, 0, 0));
+			Obs [i] = Instantiate (mycube, new Vector3 (600, 600, 600), Quaternion.Euler (0, 0, 0));
 		}
 		start_p = -50;
 		//Generate (new Vector3(0,0,0),new Vector3(0,0,0));
@@ -31,9 +31,9 @@ public class ObstacleGen : MonoBehaviour {
 	}
 	public void Generate(Vector3 agentPos, Vector3 targetPos) {
 		for (int i = 0; i < ObsNumMax; i++) {
-			Obs [i].transform.position = new Vector3 (-50, -50, -50);
+			Obs [i].transform.position = new Vector3 (600, 600, 600);
 		}
-		ObsRoot = 10;// Random.Range(0,10);
+		ObsRoot = 2;// Random.Range(0,10);
 		//ObsRoot = (int)density;
 
 		ObsNum = ObsRoot * ObsRoot;
@@ -61,7 +61,7 @@ public class ObstacleGen : MonoBehaviour {
 //				if (x > -3 && x < 3 && z > -3 && z < 3)
 //					continue;
 				//Vector3 pos = new Vector3 (-21+j*7 +5, transform.position.y, -21+i*7+5);
-				Vector3 pos = new Vector3 (x, scaleY/2 - 0.5f, z);
+				Vector3 pos = new Vector3 (x, scaleY/2 - 0.5f + targetPos.y, z);
 				//Obs [i+j] = Instantiate (mycube, pos,  Quaternion.Euler (0, Random.value*360, 0));
 				Obs [i*Mathf.RoundToInt(itr)+j].transform.position = pos;
 				Obs [i * Mathf.RoundToInt (itr) + j].transform.rotation = Quaternion.Euler (0, Random.value * 360, 0);
