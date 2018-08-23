@@ -1,0 +1,212 @@
+fileFormatVersion: 2
+guid: 78da41ac451a41346bab9662769a5dbd
+timeCreated: 18446744011573954816
+ModelImporter:
+  serializedVersion: 21
+  fileIDToRecycleName:
+    100000: _build_A
+    100002: _build_B
+    100004: _build_C
+    100006: _build_D
+    100008: _build_E
+    100010: _build_F
+    100012: _build_G
+    100014: _build_H
+    100016: _build_I
+    100018: _hiway_D
+    100020: _hiway_E
+    100022: _hiway_F
+    100024: _hiway_H
+    100026: _road_A
+    100028: _road_B
+    100030: _road_C
+    100032: _road_D
+    100034: _road_E
+    100036: _road_F
+    100038: _road_G
+    100040: _road_H
+    100042: _road_I
+    100044: block_A
+    100046: block_B
+    100048: block_C
+    100050: block_D
+    100052: block_E
+    100054: block_F
+    100056: block_G
+    100058: block_H
+    100060: block_I
+    100062: //RootNode
+    400000: _build_A
+    400002: _build_B
+    400004: _build_C
+    400006: _build_D
+    400008: _build_E
+    400010: _build_F
+    400012: _build_G
+    400014: _build_H
+    400016: _build_I
+    400018: _hiway_D
+    400020: _hiway_E
+    400022: _hiway_F
+    400024: _hiway_H
+    400026: _road_A
+    400028: _road_B
+    400030: _road_C
+    400032: _road_D
+    400034: _road_E
+    400036: _road_F
+    400038: _road_G
+    400040: _road_H
+    400042: _road_I
+    400044: block_A
+    400046: block_B
+    400048: block_C
+    400050: block_D
+    400052: block_E
+    400054: block_F
+    400056: block_G
+    400058: block_H
+    400060: block_I
+    400062: //RootNode
+    2300000: _build_A
+    2300002: _build_B
+    2300004: _build_C
+    2300006: _build_D
+    2300008: _build_E
+    2300010: _build_F
+    2300012: _build_G
+    2300014: _build_H
+    2300016: _build_I
+    2300018: _hiway_D
+    2300020: _hiway_E
+    2300022: _hiway_F
+    2300024: _hiway_H
+    2300026: _road_A
+    2300028: _road_B
+    2300030: _road_C
+    2300032: _road_D
+    2300034: _road_E
+    2300036: _road_F
+    2300038: _road_G
+    2300040: _road_H
+    2300042: _road_I
+    3300000: _build_A
+    3300002: _build_B
+    3300004: _build_C
+    3300006: _build_D
+    3300008: _build_E
+    3300010: _build_F
+    3300012: _build_G
+    3300014: _build_H
+    3300016: _build_I
+    3300018: _hiway_D
+    3300020: _hiway_E
+    3300022: _hiway_F
+    3300024: _hiway_H
+    3300026: _road_A
+    3300028: _road_B
+    3300030: _road_C
+    3300032: _road_D
+    3300034: _road_E
+    3300036: _road_F
+    3300038: _road_G
+    3300040: _road_H
+    3300042: _road_I
+    4300000: _road_A
+    4300002: _build_A
+    4300004: _road_B
+    4300006: _build_B
+    4300008: _road_C
+    4300010: _build_C
+    4300012: _road_D
+    4300014: _build_D
+    4300016: _hiway_D
+    4300018: _road_E
+    4300020: _build_E
+    4300022: _hiway_E
+    4300024: _road_F
+    4300026: _build_F
+    4300028: _hiway_F
+    4300030: _road_G
+    4300032: _build_G
+    4300034: _road_H
+    4300036: _build_H
+    4300038: _hiway_H
+    4300040: _road_I
+    4300042: _build_I
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 0
+    importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 4
+    normalCalculationMode: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

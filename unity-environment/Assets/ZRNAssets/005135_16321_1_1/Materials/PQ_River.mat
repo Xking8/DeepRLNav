@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: PQ_River
+  m_Shader: {fileID: 4800000, guid: 8a2a31cac8f81414bafe9f84651e692e, type: 3}
+  m_ShaderKeywords: []
+  m_CustomRenderQueue: -1
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+      data:
+        first:
+          name: _MainTex
+        second:
+          m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _nise_texture
+        second:
+          m_Texture: {fileID: 2800000, guid: 044754cdb25ca3c4ba3ad6a30c02f70a, type: 3}
+          m_Scale: {x: 8, y: 10}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _main_texture
+        second:
+          m_Texture: {fileID: 2800000, guid: 9a8bc557e9a97f445b3e76775880b484, type: 3}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+    m_Floats:
+      data:
+        first:
+          name: _Gloss
+        second: .5
+      data:
+        first:
+          name: _tex_scroll_A
+        second: .150000006
+      data:
+        first:
+          name: _tex_scroll_B
+        second: .100000001
+    m_Colors:
+      data:
+        first:
+          name: _Color
+        second: {r: .169934645, g: .246392488, b: .254901975, a: 1}
+      data:
+        first:
+          name: _main_color
+        second: {r: .400627136, g: .747695327, b: .838235259, a: 1}
+      data:
+        first:
+          name: _color_twk
+        second: {r: 1, g: 1, b: 1, a: 1}

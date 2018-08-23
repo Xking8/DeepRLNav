@@ -1,0 +1,25 @@
+1. python ppo.py --max-steps=4e6 --time-horizon=512 --num-epoch=5 --buffer-size=4096 --batch-size=256 --learning-rate=1e-4 --hidden-unit=64 --normalize --train
+python ppo.py --max-steps=4e6 --time-horizon=512 --num-epoch=5 --buffer-size=4096 --batch-size=256 --learning-rate=1e-4 --hidden-unit=64 --train
+
+2. no normalize看是否比較好
+	python ppo.py --max-steps=4e6 --time-horizon=512 --num-epoch=5 --buffer-size=4096 --batch-size=256 --learning-rate=1e-4 --hidden-unit=64 --train
+3. learngin rate 提升
+	python ppo.py --max-steps=4e6 --time-horizon=512 --num-epoch=5 --buffer-size=4096 --batch-size=256 --learning-rate=1e-3 --hidden-unit=64 --train
+
+
+
+
+3.batch_size 256->128
+	 python ppo.py --max-steps=4e6 --time-horizon=512 --num-epoch=5 --buffer-size=4096 --batch-size=128 --learning-rate=1e-4 --hidden-unit=64 --train
+
+
+
+
+4. max_step 調低看看會不會學比較快 4e6 -> 1e6
+
+5. increase buffer_size 4096-> 4096*3=12288
+
+
+5/17:
+	tensorboard --logdir=summaries
+	python ppo.py --max-steps=250e6 --time-horizon=2048 --num-epoch=5 --buffer-size=4096 --batch-size=256 --learning-rate=1e-3 --hidden-unit=64 --keep-checkpoints=16 --save-freq=50000 --train
