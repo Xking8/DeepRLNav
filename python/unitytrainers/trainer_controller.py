@@ -14,6 +14,7 @@ from unitytrainers.ppo.trainer import PPOTrainer
 from unitytrainers.bc.trainer import BehavioralCloningTrainer
 from unityagents import UnityEnvironment, UnityEnvironmentException
 
+subsample = True
 
 class TrainerController(object):
     def __init__(self, env_path, run_id, save_freq, curriculum_file, fast_simulation, load, train,
@@ -248,12 +249,21 @@ class TrainerController(object):
             global_step = 0  # This is only for saving the model
             self.env.curriculum.increment_lesson(self._get_progress())
             curr_info = self.env.reset(train_mode=self.fast_simulation)
-            # #mycode
-            # subsize = 40# {2,4,8,16,20,40} higher the image will have lower resolution
-            # for brain_name, trainer in self.trainers.items():
-            #     curr_info[brain_name].visual_observations[1] = self.subsampling(
-            #         curr_info[brain_name].visual_observations[1], subsize)
-            # # end mycode
+
+            n_actor = 0
+
+            #mycode
+            #subsize = 40# {2,4,8,16,20,40} higher the image will have lower resolution
+            for brain_name, trainer in self.trainers.items():
+                n_actor = len(curr_info[brain_name].agents)
+                
+                #curr_info[brain_name].visual_observations[1] = self.subsampling(
+                #    curr_info[brain_name].visual_observations[1], subsize)
+
+            # end mycode
+
+            print("N_AGENT:", n_actor)
+            resolution = [80] * n_actor
             if self.train_model:
                 for brain_name, trainer in self.trainers.items():
                     trainer.write_tensorboard_text('Hyperparameters', trainer.parameters)
@@ -270,19 +280,40 @@ class TrainerController(object):
                     # Decide and take an action
                     take_action_vector, take_action_memories, take_action_text, take_action_outputs = {}, {}, {}, {}
                     for brain_name, trainer in self.trainers.items():
+                        #mycode
+                        if subsample:
+                            for i in range(n_actor):
+                                curr_info[brain_name].visual_observations[1][i] = self.subsampling(curr_info[brain_name].visual_observations[1][i], resolution[i])
+                        #end mycode
                         (take_action_vector[brain_name],
                          take_action_memories[brain_name],
                          take_action_text[brain_name],
                          take_action_outputs[brain_name]) = trainer.take_action(curr_info)
+                        #mycode
+                        for i in range(n_actor):
+                            #print(take_action_vector[brain_name])
+                            if take_action_vector[brain_name][i]==5 and resolution[i]<80:
+                                resolution[i] = resolution[i]*2
+                            if take_action_vector[brain_name][i] == 6 and resolution[i]>3:
+                                resolution[i] = resolution[i]/2
+                        #end mycode
+
                     new_info = self.env.step(vector_action=take_action_vector, memory=take_action_memories,
                                              text_action=take_action_text)
+                    #print("obs length:", len(new_info[brain_name].visual_observations))
+                    #print("obs size:", new_info[brain_name].visual_observations[0].shape)
                     if t.get_step%500==0 :
                         print("###steps:", t.get_step)
                     for brain_name, trainer in self.trainers.items():
-                        # #mycode
-                        # new_info[brain_name].visual_observations[1] = self.subsampling(
-                        #     new_info[brain_name].visual_observations[1], subsize)
-                        # #end mycode
+
+                        #mycode
+                        if subsample:
+                            for i in range(n_actor):
+                                new_info[brain_name].visual_observations[1][i] = self.subsampling(
+                                    new_info[brain_name].visual_observations[1][i], resolution[i])
+
+                        #end mycode
+
                         trainer.add_experiences(curr_info, new_info, take_action_outputs[brain_name])
                         trainer.process_experiences(curr_info, new_info)
                         if trainer.is_ready_update() and self.train_model and trainer.get_step <= trainer.get_max_steps:
@@ -320,14 +351,16 @@ class TrainerController(object):
         if self.train_model:
             self._export_graph()
 
-    def subsampling(self, image, size):
-        block = image.shape[1] / size
+    def subsampling(self, image, resolution):
+        #print(image.shape)
+        size = int(80/(int(resolution)))
+        block = image.shape[0] / size
         for i in range(int(block)):
             for j in range(int(block)):
                 for m in range(size):
                     for n in range(size):
                         for c in range(3):
-                            image[0][i*size+m][j*size+n][c]=image[0][i*size][j*size][c]
+                            image[i*size+m][j*size+n][c]=image[i*size][j*size][c]
                 #print(str(i) + "," + str(j) + ": " + str(image[0][i*size][j*size][0]),str(image[0][i*size][j*size][1]),str(image[0][i*size][j*size][2]))
         return image
         #import scipy.misc

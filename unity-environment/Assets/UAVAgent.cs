@@ -23,7 +23,8 @@ public class UAVAgent : Agent {
 	enum MenuverType{Xplus,Xminus,Yplus,Yminus,Zplus,Zminus,None}
 
 	UAVAcademy academy;
-
+	public bool rs_action;
+	public bool request;
 	//public override void InitializeAgent()
 	void Start () 
 	{
@@ -42,6 +43,7 @@ public class UAVAgent : Agent {
 		agentParameters.agentCameras [0] = imgSyn.capturePasses[2].camera;
 		agentParameters.agentCameras [1] = imgSyn.capturePasses[3].camera;
 		//imgSyn.OnSceneChange ();
+		request = false;
 	}
 
 	public override void CollectObservations()
@@ -68,18 +70,25 @@ public class UAVAgent : Agent {
 	public override void AgentAction(float[] vectorAction, string textAction)
 	{
 		//print ("steps: " + GetStepCount ());
+		rs_action = false;
 		if(GetStepCount()<1)
 			imgSyn.OnSceneChange ();
 		if (vectorAction [0] == 0)
 			Menuver (MenuverType.Xplus);
-		if (vectorAction [0] == 1)
+		else if (vectorAction [0] == 1)
 			Menuver (MenuverType.Xminus);
-		if (vectorAction [0] == 2)
+		else if (vectorAction [0] == 2)
 			Menuver (MenuverType.Yplus);
-		if (vectorAction [0] == 3)
+		else if (vectorAction [0] == 3)
 			Menuver (MenuverType.Yminus);
-		if (vectorAction [0] == 4)
+		else if (vectorAction [0] == 4)
 			Menuver (MenuverType.Zplus);
+
+		else if (vectorAction[0]==5 ||vectorAction[0]==6) { // 5/6 = up/down resolution
+			Menuver (MenuverType.None);
+			//rs_action = true;
+			//RequestDecision ();
+		}
 		/*if (vectorAction [0] == 5)
 			Menuver (MenuverType.Zminus);*/
 		
@@ -143,6 +152,13 @@ public class UAVAgent : Agent {
 			return;
 
 		}
+		if (rs_action)
+			if (request) {
+				request = false;
+				//RequestDecision ();
+			}
+			else
+				request = true;
 		//float a = academy.resetParameters ["density"];
 
 	}
@@ -259,7 +275,7 @@ public class UAVAgent : Agent {
 			//rb.rotation = Quaternion.identity;
 			//print("Rotate"+mysteps);
 		}
-		if (type == MenuverType.Xminus && rb.velocity.x*-1 < vel_limit) { //rotate anti clockwise
+		else if (type == MenuverType.Xminus && rb.velocity.x*-1 < vel_limit) { //rotate anti clockwise
 			rb.velocity = transform.forward*0;
 			Vector3 m_EulerAngleVelocity = new Vector3(0, -10, 0) * Scaling;
 			Quaternion deltaRotation = Quaternion.Euler(m_EulerAngleVelocity * Time.deltaTime);
@@ -268,20 +284,22 @@ public class UAVAgent : Agent {
 			//print("Rotate reverse"+mysteps);
 		}
 
-		if (type == MenuverType.Yplus && rb.velocity.y < vel_limit) {
+		else if (type == MenuverType.Yplus && rb.velocity.y < vel_limit) {
 			rb.velocity = Vector3.up * vertiScaling * Scaling;
 			//rb.AddForce (Vector3.up * vertiScaling);
 			//print ("Up"+mysteps);
 		}
-		if (type == MenuverType.Yminus && rb.velocity.y * -1 < vel_limit) {
+		else if (type == MenuverType.Yminus && rb.velocity.y * -1 < vel_limit) {
 			rb.velocity = Vector3.down * vertiScaling * Scaling;
 			//print ("Down"+mysteps);
 		}
-		if (type == MenuverType.Zplus && rb.velocity.z < vel_limit) {
+		else if (type == MenuverType.Zplus && rb.velocity.z < vel_limit) {
 			rb.velocity = transform.forward * Scaling;
 			//rb.AddForce (transform.forward);
 			//print ("Forwrad"+mysteps);
 		}
+		else if (type == MenuverType.None)
+			rb.velocity = transform.forward*0;
 		/*if (type == MenuverType.Zminus && rb.velocity.z * -1 < vel_limit) {
 			rb.velocity = -1 * transform.forward * Scaling;
 			//rb.AddForce (-1 * transform.forward);

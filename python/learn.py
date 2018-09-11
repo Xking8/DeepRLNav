@@ -21,7 +21,7 @@ if __name__ == '__main__':
       --keep-checkpoints=<n>     How many model checkpoints to keep [default: 10].
       --lesson=<n>               Start learning from this lesson [default: 0].
       --load                     Whether to load the model or randomly initialize [default: False].
-      --run-id=<path>            The sub-directory name for model and summary statistics [default: DynamicObstacles_LSTM_relativePos_multiActor(5)_DepthSubsize1_Obs2__1].
+      --run-id=<path>            The sub-directory name for model and summary statistics [default: DynamicObstacles_LSTM_relativePos_multiActor(5)_RSaction_v2_0].
       --save-freq=<n>            Frequency at which to save model [default: 250000].
       --seed=<n>                 Random seed used for training [default: -1].
       --slow                     Whether to run the game at training speed [default: False].

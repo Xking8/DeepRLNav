@@ -33,7 +33,7 @@ public class ObstacleGen : MonoBehaviour {
 		for (int i = 0; i < ObsNumMax; i++) {
 			Obs [i].transform.position = new Vector3 (600, 600, 600);
 		}
-		ObsRoot = 2;// Random.Range(0,10);
+		ObsRoot = Random.Range(0,10);
 		//ObsRoot = (int)density;
 
 		ObsNum = ObsRoot * ObsRoot;
