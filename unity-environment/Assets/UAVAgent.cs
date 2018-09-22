@@ -25,6 +25,7 @@ public class UAVAgent : Agent {
 	UAVAcademy academy;
 	public bool rs_action;
 	public bool request;
+	public int density;
 	//public override void InitializeAgent()
 	void Start () 
 	{
@@ -44,6 +45,7 @@ public class UAVAgent : Agent {
 		agentParameters.agentCameras [1] = imgSyn.capturePasses[3].camera;
 		//imgSyn.OnSceneChange ();
 		request = false;
+		density = 0;
 	}
 
 	public override void CollectObservations()
@@ -63,6 +65,7 @@ public class UAVAgent : Agent {
 		AddVectorObs(rb.rotation.eulerAngles.x);
 		AddVectorObs(rb.rotation.eulerAngles.y);
 		AddVectorObs(rb.rotation.eulerAngles.z);
+		AddVectorObs (density);
 		/*AddVectorObs(TargetRb.velocity.x);
 		AddVectorObs(TargetRb.velocity.y);
 		AddVectorObs(TargetRb.velocity.z);*/
@@ -210,7 +213,7 @@ public class UAVAgent : Agent {
 
 		rb.velocity = new Vector3(0,0,0);
 		if(GetComponentInParent<ObstacleGen>())
-			GetComponentInParent<ObstacleGen>().Generate(transform.position, Target.transform.position);
+			density = GetComponentInParent<ObstacleGen>().Generate(transform.position, Target.transform.position);
 		if (GetComponentInParent<RanTargetAgentPos> ())
 			GetComponentInParent<RanTargetAgentPos> ().RanTA ();	
 		/*last

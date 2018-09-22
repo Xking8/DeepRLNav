@@ -23,7 +23,7 @@ logger = logging.getLogger("unityagents")
 class UnityEnvironment(object):
     def __init__(self, file_name, worker_id=0,
                  #base_port=5005, curriculum=None,
-                 base_port=5106, curriculum=None,
+                 base_port=5112, curriculum=None,
                  seed=0, docker_training=False):
         """
         Starts a new unity environment and establishes a connection with the environment.

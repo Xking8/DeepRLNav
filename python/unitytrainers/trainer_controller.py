@@ -256,14 +256,18 @@ class TrainerController(object):
             #subsize = 40# {2,4,8,16,20,40} higher the image will have lower resolution
             for brain_name, trainer in self.trainers.items():
                 n_actor = len(curr_info[brain_name].agents)
-                
+                print(curr_info[brain_name])
+                #print(curr_info[brain_name].vector_observations[i][curr_info[brain_name].vector_observations.shape[1]-1]) #6
+                print(curr_info[brain_name].vector_observations.shape)
                 #curr_info[brain_name].visual_observations[1] = self.subsampling(
                 #    curr_info[brain_name].visual_observations[1], subsize)
 
             # end mycode
 
             print("N_AGENT:", n_actor)
-            resolution = [80] * n_actor
+            default_resol = 40
+            resolution = [default_resol] * n_actor
+            density = [0]* n_actor
             if self.train_model:
                 for brain_name, trainer in self.trainers.items():
                     trainer.write_tensorboard_text('Hyperparameters', trainer.parameters)
@@ -281,21 +285,30 @@ class TrainerController(object):
                     take_action_vector, take_action_memories, take_action_text, take_action_outputs = {}, {}, {}, {}
                     for brain_name, trainer in self.trainers.items():
                         #mycode
+                        for i in range(n_actor):
+                            #print(curr_info[brain_name].vector_observations.shape)
+                            #print(curr_info[brain_name].vector_observations.shape[1] - 1)
+                            #print(curr_info[brain_name].vector_observations[i][6])
+                            density[i] = curr_info[brain_name].vector_observations[i][ curr_info[brain_name].vector_observations.shape[1] - 1 ]
+                            curr_info[brain_name].vector_observations[i][
+                                curr_info[brain_name].vector_observations.shape[1] - 1] = 0
                         if subsample:
                             for i in range(n_actor):
                                 curr_info[brain_name].visual_observations[1][i] = self.subsampling(curr_info[brain_name].visual_observations[1][i], resolution[i])
+
                         #end mycode
                         (take_action_vector[brain_name],
                          take_action_memories[brain_name],
                          take_action_text[brain_name],
                          take_action_outputs[brain_name]) = trainer.take_action(curr_info)
                         #mycode
+                        new_resolution = resolution
                         for i in range(n_actor):
                             #print(take_action_vector[brain_name])
                             if take_action_vector[brain_name][i]==5 and resolution[i]<80:
-                                resolution[i] = resolution[i]*2
+                                new_resolution[i] = resolution[i]*2
                             if take_action_vector[brain_name][i] == 6 and resolution[i]>3:
-                                resolution[i] = resolution[i]/2
+                                new_resolution[i] = resolution[i]/2
                         #end mycode
 
                     new_info = self.env.step(vector_action=take_action_vector, memory=take_action_memories,
@@ -310,12 +323,12 @@ class TrainerController(object):
                         if subsample:
                             for i in range(n_actor):
                                 new_info[brain_name].visual_observations[1][i] = self.subsampling(
-                                    new_info[brain_name].visual_observations[1][i], resolution[i])
+                                    new_info[brain_name].visual_observations[1][i], new_resolution[i])
 
                         #end mycode
 
                         trainer.add_experiences(curr_info, new_info, take_action_outputs[brain_name])
-                        trainer.process_experiences(curr_info, new_info)
+                        trainer.process_experiences(curr_info, new_info, density, resolution, new_resolution)
                         if trainer.is_ready_update() and self.train_model and trainer.get_step <= trainer.get_max_steps:
                             # Perform gradient descent with experience buffer
                             trainer.update_model()
@@ -329,7 +342,16 @@ class TrainerController(object):
                     if global_step % self.save_freq == 0 and global_step != 0 and self.train_model:
                         # Save Tensorflow model
                         self._save_model(sess, steps=global_step, saver=saver)
+
+                    resolution = new_resolution
+
+                    for brain_name, trainer in self.trainers.items():
+                        for i in range(n_actor):
+                            if new_info[brain_name].local_done[i]:
+                                resolution[i] = default_resol
+
                     curr_info = new_info
+
                     '''for brain_name, trainer in self.trainers.items():
                         #print (str(curr_info[brain_name].visual_observations[0]))
                         #import scipy.misc
@@ -339,6 +361,7 @@ class TrainerController(object):
                         curr_info[brain_name].visual_observations[1] = self.subsampling(curr_info[brain_name].visual_observations[1], 16)
                         print(curr_info[brain_name].visual_observations[0] [0][0][0][0],curr_info[brain_name].visual_observations[0] [0][0][0][1],curr_info[brain_name].visual_observations[0] [0][0][0][2])
                     '''
+
                 # Final save Tensorflow model
                 if global_step != 0 and self.train_model:
                     self._save_model(sess,  steps=global_step, saver=saver)
@@ -353,6 +376,8 @@ class TrainerController(object):
 
     def subsampling(self, image, resolution):
         #print(image.shape)
+        if resolution == 80:
+            return image
         size = int(80/(int(resolution)))
         block = image.shape[0] / size
         for i in range(int(block)):

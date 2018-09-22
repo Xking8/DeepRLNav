@@ -12,6 +12,7 @@ from unityagents import AllBrainInfo
 from unitytrainers.buffer import Buffer
 from unitytrainers.ppo.models import PPOModel
 from unitytrainers.trainer import UnityTrainerException, Trainer
+import math
 
 logger = logging.getLogger("unityagents")
 
@@ -71,7 +72,8 @@ class PPOTrainer(Trainer):
         stats = {'cumulative_reward': [], 'episode_length': [], 'value_estimate': [],
                  'entropy': [], 'value_loss': [], 'policy_loss': [], 'learning_rate': [], 'success_record': []}
         self.stats = stats
-
+        reso_stats = [[] for y in range(10)]
+        self.reso_stats = reso_stats
         self.training_buffer = Buffer()
         self.cumulative_rewards = {}
         self.episode_steps = {}
@@ -261,7 +263,7 @@ class PPOTrainer(Trainer):
                         self.episode_steps[agent_id] = 0
                     self.episode_steps[agent_id] += 1
 
-    def process_experiences(self, current_info: AllBrainInfo, new_info: AllBrainInfo):
+    def process_experiences(self, current_info: AllBrainInfo, new_info: AllBrainInfo, density, resolution, new_resolution):
         """
         Checks agent histories for processing condition, and processes them as necessary.
         Processing involves calculating value and advantage targets for model updating step.
@@ -323,6 +325,8 @@ class PPOTrainer(Trainer):
                         self.stats['success_record'].append(1)
                     else:
                         self.stats['success_record'].append(0)
+                for i in range (len(density)):
+                    self.reso_stats[int(density[i])].append(math.log((resolution[i]/2.5),2))
 
     def end_episode(self):
         """
@@ -425,6 +429,12 @@ class PPOTrainer(Trainer):
             self.stats['success_record'] = self.stats['success_record'][-101:]
             summary.value.add(tag='Info/SuccessRate', simple_value=success_rate)
             summary.value.add(tag='Info/Lesson', simple_value=lesson_number)
+            for i in range (10):
+                if len(self.reso_stats[i]) > 0:
+                    mean_reso =float(np.mean(self.reso_stats[i]))
+                    summary.value.add(tag='Info/Density {}'.format(i), simple_value=mean_reso)
+                    self.reso_stats[i] = []
+
             self.summary_writer.add_summary(summary, steps)
             self.summary_writer.flush()
 

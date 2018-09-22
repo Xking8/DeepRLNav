@@ -29,7 +29,7 @@ public class ObstacleGen : MonoBehaviour {
 		//Generate (new Vector3(0,0,0),new Vector3(0,0,0));
 
 	}
-	public void Generate(Vector3 agentPos, Vector3 targetPos) {
+	public int Generate(Vector3 agentPos, Vector3 targetPos) {
 		for (int i = 0; i < ObsNumMax; i++) {
 			Obs [i].transform.position = new Vector3 (600, 600, 600);
 		}
@@ -71,7 +71,7 @@ public class ObstacleGen : MonoBehaviour {
 				//Obs [i].layer = 10;
 			}
 		}
-
+		return ObsRoot;
 //		Vector3 midpoint = new Vector3 ((AgentPos.x + targetPos.x) / 2, (AgentPos.y + targetPos.y) / 2, (AgentPos.z + targetPos.z) / 2);
 //
 //		//Vector3 pos = new Vector3 (transform.position.x + 5*Random.value, transform.position.y, transform.position.z+ 5*Random.value);

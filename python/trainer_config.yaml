@@ -15,7 +15,7 @@ default:
     num_layers: 2
     time_horizon: 2048
     sequence_length: 64
-    summary_freq: 10000
+    summary_freq: 2000
     use_recurrent: True
 
 ori_de:
